@@ -1,0 +1,117 @@
+unit Unit2;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, ShellApi, ComObj;
+
+type
+  TForm2 = class(TForm)
+    Image1: TImage;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Image2: TImage;
+    Bevel1: TBevel;
+    Label9: TLabel;
+    Button1: TButton;
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormCreate(Sender: TObject);
+    procedure Label7MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Label7MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Label7Click(Sender: TObject);
+    procedure Label4Click(Sender: TObject);
+    procedure Label4MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Label4MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Button1Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form2: TForm2;
+
+const
+ link = clBlue;
+ alink = clRed;
+ vlink = clPurple;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm2.FormShow(Sender: TObject);
+begin
+ Form2.ClientHeight := 146;
+end;
+
+procedure TForm2.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+ if (Key = VK_ESCAPE) then Form2.Close;
+end;
+
+procedure TForm2.FormCreate(Sender: TObject);
+begin
+ Label7.Font.Color := link;
+ Label4.Font.Color := link;
+end;
+
+procedure TForm2.Label7MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+ Label7.Font.Color := alink;
+end;
+
+procedure TForm2.Label7MouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+ Label7.Font.Color := vlink;
+end;
+
+procedure TForm2.Label7Click(Sender: TObject);
+begin
+ ShellExecute(Application.Handle,PChar('open'),
+ PChar('https://crfbn.tb.ru/amcaxapob'), PChar(0), nil, SW_NORMAL);
+end;
+
+procedure TForm2.Label4Click(Sender: TObject);
+var pCh: PChar;
+begin
+  pCh := 'mailto:amcaxapob@gmail.com?subject=Calc&body=Hi&file="c:\autoexec.bat"';
+  ShellExecute(0, 'open', pCh, nil, nil, SW_SHOWNORMAL);
+end;
+
+procedure TForm2.Label4MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+ Label4.Font.Color := alink;
+end;
+
+procedure TForm2.Label4MouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+ Label4.Font.Color := vlink;
+end;
+
+procedure TForm2.Button1Click(Sender: TObject);
+begin
+ Form2.ClientHeight := 446;
+end;
+
+
+
+end.
