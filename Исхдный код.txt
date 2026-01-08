@@ -1,0 +1,448 @@
+unit Calc1;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Math, Buttons, ExtCtrls, Unit2, Menus;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Button4: TButton;
+    Button5: TButton;
+    Button6: TButton;
+    Button7: TButton;
+    Button8: TButton;
+    Button9: TButton;
+    Button10: TButton;
+    Button11: TButton;
+    Button16: TButton;
+    Button23: TButton;
+    Button17: TButton;
+    Button18: TButton;
+    Button22: TButton;
+    Button19: TButton;
+    Button21: TButton;
+    Button12: TButton;
+    Button13: TButton;
+    Button14: TButton;
+    Button15: TButton;
+    Button20: TButton;
+    Memo1: TMemo;
+    MainMenu1: TMainMenu;
+    A1: TMenuItem;
+    procedure Button2Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
+    procedure Button7Click(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
+    procedure Button9Click(Sender: TObject);
+    procedure Button10Click(Sender: TObject);
+    procedure Button16Click(Sender: TObject);
+    procedure Button23Click(Sender: TObject);
+    procedure Button17Click(Sender: TObject);
+    procedure Button11Click(Sender: TObject);
+    procedure Button18Click(Sender: TObject);
+    procedure Button19Click(Sender: TObject);
+    procedure Button14Click(Sender: TObject);
+    procedure Button20Click(Sender: TObject);
+    procedure Button12Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure Button15Click(Sender: TObject);
+    procedure Button22Click(Sender: TObject);
+    procedure Button13Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Button21Click(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure A1Click(Sender: TObject);
+  private
+    { Private declarations }
+
+  public
+    { Public declarations }
+  end;
+
+const
+  Version = '1.0';
+
+var
+  Form1 : TForm1;
+  Operation, LastKey, Separation : Char;
+  Number1, Number2, MyRezult : Extended;
+  Number_1, Number_2, My_Rezult : String;
+  Key : Byte;  // до ввода операции '1', после '2'
+
+implementation
+
+{$R *.dfm}
+
+procedure DigitKeyDown(Digit: Char);
+begin
+ if (Form1.Memo1.Lines.Text <> '0') and (Form1.Memo1.Lines.Text <> 'Ошибка') then
+  if (Length(Form1.Memo1.Lines.Text) < Form1.Memo1.MaxLength) then
+   if Key = 1 then
+    Form1.Memo1.Lines.Text := Form1.Memo1.Lines.Text + Digit
+   else
+   begin
+    Form1.Memo1.Lines.Text := Digit;
+    Key := 1;
+   end
+  else
+ else
+ begin
+  Form1.Memo1.Lines.Text := Digit;
+  Key := 1;
+ end;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+ Separation := GetLocaleChar(GetThreadLocale, LOCALE_SDECIMAL, '.');
+ LastKey := 'c';
+end;
+
+procedure TForm1.FormShow(Sender: TObject);
+begin
+ Form1.Caption := 'Калькулятор ' + Version;
+ Memo1.Lines.Text := '0';
+ Key := 1;
+ LastKey := 'c';
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+// 1
+begin
+ DigitKeyDown('1');
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+// 2
+begin
+ DigitKeyDown('2');
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+// 3
+begin
+ DigitKeyDown('3');
+end;
+
+procedure TForm1.Button4Click(Sender: TObject);
+// 4
+begin
+ DigitKeyDown('4');
+end;
+
+procedure TForm1.Button5Click(Sender: TObject);
+// 5
+begin
+ DigitKeyDown('5');
+end;
+
+procedure TForm1.Button6Click(Sender: TObject);
+// 6
+begin
+ DigitKeyDown('6');
+end;
+
+procedure TForm1.Button7Click(Sender: TObject);
+// 7
+begin
+ DigitKeyDown('7');
+end;
+
+procedure TForm1.Button8Click(Sender: TObject);
+// 8
+begin
+ DigitKeyDown('8');
+end;
+
+procedure TForm1.Button9Click(Sender: TObject);
+// 9
+begin
+ DigitKeyDown('9');
+end;
+
+procedure TForm1.Button10Click(Sender: TObject);
+// 0
+begin
+ DigitKeyDown('0');
+end;
+
+procedure TForm1.Button11Click(Sender: TObject);
+// .
+var
+ i, u : Byte;
+begin
+ if Memo1.Lines.Text <> 'Ошибка' then
+ begin
+  i := Pos(Separation, Memo1.Lines.Text);
+  if Memo1.Lines.Text = '' then u := 0 else u := 1;
+  if i = 0 then
+   if u = 1 then Memo1.Lines.Text := Memo1.Lines.Text + Separation else Memo1.Lines.Text := '0' + Separation;
+  end;
+end;
+
+procedure TForm1.Button12Click(Sender: TObject);
+// <--
+var
+  CurrentText : string;
+begin
+ CurrentText := Memo1.Lines.Text;
+ if (CurrentText <> '0') and (CurrentText <> 'Ошибка') then
+  if Length(CurrentText) > 0 then
+  begin
+   Delete(CurrentText, Length(CurrentText), 1);
+   Memo1.Lines.Text := CurrentText;
+  end;
+end;
+
+procedure TForm1.Button13Click(Sender: TObject);
+// CE
+begin
+ Memo1.Lines.Text := '0';
+end;
+
+procedure TForm1.Button14Click(Sender: TObject);
+// C
+begin
+ try
+  Number_1 := '';
+  Number_2 := '';
+  My_Rezult := '';
+  MyRezult := 0;
+  Number1 := 0;
+  Number2 := 0;
+  Key := 1;
+  LastKey := 'c';
+  Memo1.Lines.Text := '0';
+ except
+  on Exception : EConvertError do ShowMessage(Exception.Message);
+ end;
+end;
+
+procedure TForm1.Button15Click(Sender: TObject);
+// +-
+var
+  Number : Extended;
+begin
+if (Memo1.Lines.Text <> '0') and (Memo1.Lines.Text <> 'Ошибка') then
+ try
+   Number := StrToFloat(Memo1.Text);
+   Number := -Number;
+   Memo1.Lines.Text := FloatToStr(Number);
+  except
+   on Exception : EConvertError do ShowMessage(Exception.Message);
+  end;
+ LastKey := '±';
+end;
+
+procedure TForm1.Button16Click(Sender: TObject);
+// +
+begin
+ if (Memo1.Lines.Text <> 'Ошибка') then
+  if (Memo1.Lines.Text <> '') then
+  begin
+   Number_1 := Memo1.Lines.Text;
+   try
+    Number1 := StrToFloat(Number_1);
+   except
+    on Exception : EConvertError do ShowMessage(Exception.Message);
+   end;
+   Operation:='+';
+   Key := 2;
+   LastKey := '+';
+  end;
+end;
+
+procedure TForm1.Button17Click(Sender: TObject);
+// -
+begin
+if (Memo1.Lines.Text <> 'Ошибка') then
+if (Memo1.Lines.Text <> '') then
+ begin
+ Number_1 := Memo1.Lines.Text;
+ try
+  Number1 := StrToFloat(Number_1);
+ except
+  on Exception : EConvertError do ShowMessage(Exception.Message);
+ end;
+ end;
+ Operation:='-';
+ Key := 2;
+ LastKey := '-';
+end;
+
+procedure TForm1.Button18Click(Sender: TObject);
+// *
+begin
+if (Memo1.Lines.Text <> 'Ошибка') then
+if (Memo1.Lines.Text <> '') then
+ begin
+ Number_1 := Memo1.Text;
+ try
+  Number1 := StrToFloat(Number_1);
+ except
+  on Exception : EConvertError do ShowMessage(Exception.Message);
+ end;
+ end;
+ Operation:='*';
+ Key := 2;
+ LastKey := '*';
+end;
+
+procedure TForm1.Button19Click(Sender: TObject);
+// /
+begin
+if (Memo1.Lines.Text <> 'Ошибка') then
+if (Memo1.Lines.Text <> '') then
+ begin
+ Number_1 := Memo1.Lines.Text;
+ try
+  Number1 := StrToFloat(Number_1);
+ except
+  on Exception : EConvertError do ShowMessage(Exception.Message);
+ end;
+ end;
+ Operation:='/';
+ Key := 2;
+ LastKey := '/';
+end;
+
+procedure TForm1.Button20Click(Sender: TObject);
+// V
+var
+ e : extended;
+begin
+ if (Memo1.Lines.Text <> '0') and (Memo1.Lines.Text <> 'Ошибка') then
+ begin
+  try
+   e := StrToFloat(Memo1.Lines.Text);
+   except
+   on Exception : EConvertError do ShowMessage(Exception.Message);
+  end;
+  if e >= 0 then
+  begin
+   e := Exp(Ln(e)/2);
+   My_Rezult := FloatToStr(e);
+   Memo1.Lines.Text := My_Rezult;
+  end
+  else
+  Memo1.Lines.Text := 'Ошибка';
+ LastKey := 'v';
+ end;
+end;
+
+procedure TForm1.Button21Click(Sender: TObject);
+// %
+begin
+if (Memo1.Lines.Text <> '0') and (Memo1.Lines.Text <> 'Ошибка') then
+ begin
+ if Memo1.Lines.Text <> '' then
+  begin
+   if LastKey <> '%' then
+    begin
+     Number_2 := Memo1.Lines.Text;
+    try
+     Number2 := StrToFloat(Number_2);
+    except
+     on Exception : EConvertError do ShowMessage(Exception.Message);
+    end;
+    case Operation of
+     '+': Number2 := Number2 / 100 * Number1;
+     '-': Number2 := Number2 / 100 * Number1;
+     '*': Number2 := Number2 / 100;
+     '/': Number2 := Number2 / 100;
+    end;
+    try
+     My_Rezult := FloatToStr(Number2);
+    except
+     on Exception : EConvertError do ShowMessage(Exception.Message);
+     end;
+     end;
+   end;
+ Memo1.Lines.Text := My_Rezult;
+ LastKey := '%'
+ end;
+end;
+
+procedure TForm1.Button22Click(Sender: TObject);
+// 1/x
+var
+ TempNumber: Extended;
+begin
+ if (Memo1.Lines.Text <> '0') and (Memo1.Lines.Text <> 'Ошибка') then
+  begin
+  try
+   TempNumber := StrToFloat(Memo1.Lines.Text);
+  except on Exception : EConvertError do ShowMessage(Exception.Message);
+  end;
+
+   if TempNumber = 0 then
+    begin
+     Memo1.Lines.Text := 'Ошибка';
+    end;
+
+ Number1 := 1 / TempNumber;
+ Memo1.Lines.Text := FloatToStr(Number1);
+ Number_1 := Memo1.Lines.Text;
+  end;
+
+ LastKey := 'x';
+end;
+
+procedure TForm1.Button23Click(Sender: TObject);
+// =
+begin
+if  Memo1.Lines.Text <> 'Ошибка' then
+begin
+ if Memo1.Lines.Text <> '' then
+  begin
+   if LastKey <> '=' then Number_2 := Memo1.Lines.Text;
+    try
+     Number2 := StrToFloat(Number_2);
+    except
+     on Exception : EConvertError do ShowMessage(Exception.Message);
+    end;
+
+ case Operation of
+  '+': MyRezult := Number1 + Number2;
+  '-': MyRezult := Number1 - Number2;
+  '*': MyRezult := Number1 * Number2;
+  '/':
+   begin
+    if Number2 = 0 then
+     Memo1.Lines.Text := 'Ошибка'
+    else
+     MyRezult := Number1 / Number2;
+    end;
+   end;
+ if Memo1.Lines.Text <> 'Ошибка' then
+  Memo1.Lines.Text := FloatToStr(MyRezult);
+  Number1 := MyRezult;
+
+ Key := 1;
+ LastKey := '=';
+ end;
+end;
+end;
+
+procedure TForm1.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+ if (Key = VK_F1) then Form2.Show;
+end;
+
+procedure TForm1.A1Click(Sender: TObject);
+begin
+ Form2.Show;
+end;
+
+end.
